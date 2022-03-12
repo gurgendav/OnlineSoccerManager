@@ -7,6 +7,7 @@ public interface IApplicationDbContext
 {
     DbSet<SoccerTeam> SoccerTeams { get; set; }
     DbSet<SoccerPlayer> SoccerPlayers { get; set; }
-    
+    DbSet<TransferItem> Transfers { get; set; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

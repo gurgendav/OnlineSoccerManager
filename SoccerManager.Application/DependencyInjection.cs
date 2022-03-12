@@ -10,6 +10,7 @@ public static class DependencyInjection
     {
         services.AddTransient<ISoccerTeamService, SoccerTeamService>();
         services.AddTransient<ISoccerPlayerService, SoccerPlayerService>();
+        services.AddTransient<ITransfersService, TransfersService>();
 
         return services;
     }

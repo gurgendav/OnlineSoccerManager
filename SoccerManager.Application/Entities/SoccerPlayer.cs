@@ -24,4 +24,7 @@ public class SoccerPlayer
     
     public int SoccerTeamId { get; set; }
     public SoccerTeam SoccerTeam { get; set; }
+    
+    public int? TransferItemId { get; set; }
+    public TransferItem TransferItem { get; set; }
 }

@@ -10,5 +10,6 @@ public class MappingProfile : Profile
     {
         CreateMap<SoccerTeam, SoccerTeamResponse>();
         CreateMap<SoccerPlayer, SoccerPlayerResponse>();
+        CreateMap<TransferItem, TransferItemResponse>();
     }
 }

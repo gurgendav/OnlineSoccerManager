@@ -10,6 +10,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
 {
     public DbSet<SoccerTeam> SoccerTeams { get; set; }
     public DbSet<SoccerPlayer> SoccerPlayers { get; set; }
+    public DbSet<TransferItem> Transfers { get; set; }
 
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options) : base(options)

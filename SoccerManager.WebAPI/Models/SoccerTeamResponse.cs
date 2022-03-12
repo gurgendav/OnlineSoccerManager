@@ -12,5 +12,5 @@ public class SoccerTeamResponse
 
     public List<SoccerPlayerResponse> Players { get; set; }
     
-    public int Value => Players.Sum(p => p.MarketValue);
+    public int TeamValue => Players.Sum(p => p.MarketValue);
 }

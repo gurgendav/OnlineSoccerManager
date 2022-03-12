@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SoccerManager.Application.Exceptions;
+using SoccerManager.WebAPI.Models;
 
 namespace SoccerManager.WebAPI.Filters;
 
@@ -14,6 +15,8 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
         {
             { typeof(UnauthorizedException), HandleUnauthorizedAccessException },
+            { typeof(AlreadyInTransferException), HandleAlreadyInTransferException },
+            { typeof(NotEnoughBudgetException), HandleNotEnoughBudgetException },
         };
     }
     
@@ -48,7 +51,8 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         {
             Status = StatusCodes.Status401Unauthorized,
             Title = "Unauthorized",
-            Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
+            Type = "https://tools.ietf.org/html/rfc7235#section-3.1",
+            Detail = context.Exception.Message
         };
 
         context.Result = new ObjectResult(details)
@@ -59,6 +63,36 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
     
+    private void HandleAlreadyInTransferException(ExceptionContext context)
+    {
+        var result = new ErrorResponse
+        {
+            Errors = new List<string> { context.Exception.Message }
+        };
+
+        context.Result = new ObjectResult(result)
+        {
+            StatusCode = StatusCodes.Status400BadRequest
+        };
+
+        context.ExceptionHandled = true;
+    }
+    
+    private void HandleNotEnoughBudgetException(ExceptionContext context)
+    {
+        var result = new ErrorResponse
+        {
+            Errors = new List<string> { context.Exception.Message }
+        };
+
+        context.Result = new ObjectResult(result)
+        {
+            StatusCode = StatusCodes.Status400BadRequest
+        };
+
+        context.ExceptionHandled = true;
+    }
+
     private void HandleInvalidModelStateException(ExceptionContext context)
     {
         var details = new ValidationProblemDetails(context.ModelState)
@@ -84,7 +118,5 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         {
             StatusCode = StatusCodes.Status500InternalServerError
         };
-
-        context.ExceptionHandled = true;
     }
 }
