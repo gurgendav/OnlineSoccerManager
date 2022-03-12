@@ -21,7 +21,21 @@ public class SoccerTeamController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<SoccerTeamResponse> GetTeam()
+    [Route("{id:int}")]
+    public async Task<IActionResult> GetTeam(int id)
+    {
+        var team = await _soccerTeamService.GetById(id);
+        if (team == null)
+        {
+            return NotFound();
+        }
+        
+        return Ok(_mapper.Map<SoccerTeamResponse>(team));
+    }
+    
+    [HttpGet]
+    [Route("my")]
+    public async Task<SoccerTeamResponse> GetUserTeam()
     {
         var team = await _soccerTeamService.FindByUserId(User.Identity!.Name);
         return _mapper.Map<SoccerTeamResponse>(team);
@@ -29,10 +43,15 @@ public class SoccerTeamController : ControllerBase
     
     [HttpPut]
     [Route("{teamId:int}")]
-    public async Task<SoccerTeamResponse> ChangeTeam(int teamId, [FromBody]ChangeSoccerTeamRequest request)
+    public async Task<IActionResult> UpdateTeam(int teamId, [FromBody]ChangeSoccerTeamRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var result = await _soccerTeamService.Update(teamId, request.Name, request.Country);
-        return _mapper.Map<SoccerTeamResponse>(result);
+        return Ok(_mapper.Map<SoccerTeamResponse>(result));
     }
     
     

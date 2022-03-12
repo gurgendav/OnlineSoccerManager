@@ -35,7 +35,7 @@ public class SoccerTeamServiceTests
         const string userId = "aaaaa";
         
         _nameGenerator.GenerateCountryName().Returns(new Fixture().Create<string>());
-        _soccerPlayerService.Create(Arg.Any<int>(), Arg.Any<string>())
+        _soccerPlayerService.Generate(Arg.Any<int>(), Arg.Any<string>())
             .Returns(callInfo => new Fixture()
                 .Build<SoccerPlayer>()
                 .With(p => p.SoccerTeam, (SoccerTeam)null)

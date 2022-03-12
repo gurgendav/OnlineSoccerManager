@@ -1,8 +1,6 @@
-using AutoFixture;
 using AutoFixture.Xunit2;
 using FluentAssertions;
 using NSubstitute;
-using SoccerManager.Application.Entities;
 using SoccerManager.Application.Interfaces;
 using SoccerManager.Application.Services;
 using Xunit;
@@ -12,18 +10,20 @@ namespace SoccerManager.Application.Tests.Services;
 public class SoccerPlayerServiceTests
 {
     private readonly INameGenerator _nameGenerator;
-    
+
     private readonly SoccerPlayerService _sut;
 
     public SoccerPlayerServiceTests()
     {
         _nameGenerator = Substitute.For<INameGenerator>();
-        _sut = new SoccerPlayerService(_nameGenerator);
+        var applicationDbContext = Substitute.For<IApplicationDbContext>();
+        var userIdAccessor = Substitute.For<IUserIdAccessor>();
+        _sut = new SoccerPlayerService(_nameGenerator, userIdAccessor, applicationDbContext);
     }
 
     [Theory]
     [AutoData]
-    public void Create_Should_CreateValidPlayer(string firstName, string lastName, string countryName, string position)
+    public void Generate_Should_CreateValidPlayer(string firstName, string lastName, string countryName, string position)
     {
         // Arrange
         const int soccerTeamId = 1;
@@ -32,7 +32,7 @@ public class SoccerPlayerServiceTests
         _nameGenerator.GenerateCountryName().Returns(countryName);
 
         // Act
-        var player = _sut.Create(soccerTeamId, position);
+        var player = _sut.Generate(soccerTeamId, position);
 
         // Assert
         player.Should().NotBeNull();

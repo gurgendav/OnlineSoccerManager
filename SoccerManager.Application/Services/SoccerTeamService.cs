@@ -29,6 +29,13 @@ public class SoccerTeamService : ISoccerTeamService
         _nameGenerator = nameGenerator;
     }
 
+    public async Task<SoccerTeam> GetById(int id)
+    {
+        return await _applicationDbContext.SoccerTeams
+            .Include(t => t.Players)
+            .FirstOrDefaultAsync(t => t.Id == id);
+    }
+
     public async Task<SoccerTeam> Create(string userId)
     {
         var team = new SoccerTeam
@@ -43,22 +50,22 @@ public class SoccerTeamService : ISoccerTeamService
 
         for (var i = 0; i < InitialGoalkeepers; i++)
         {
-            team.Players.Add(_soccerPlayerService.Create(team.Id, SoccerPlayerPosition.Goalkeeper));
+            team.Players.Add(_soccerPlayerService.Generate(team.Id, SoccerPlayerPosition.Goalkeeper));
         }
 
         for (var i = 0; i < InitialAttackers; i++)
         {
-            team.Players.Add(_soccerPlayerService.Create(team.Id, SoccerPlayerPosition.Attacker));
+            team.Players.Add(_soccerPlayerService.Generate(team.Id, SoccerPlayerPosition.Attacker));
         }
 
         for (var i = 0; i < InitialDefenders; i++)
         {
-            team.Players.Add(_soccerPlayerService.Create(team.Id, SoccerPlayerPosition.Defender));
+            team.Players.Add(_soccerPlayerService.Generate(team.Id, SoccerPlayerPosition.Defender));
         }
 
         for (var i = 0; i < InitialMidfielders; i++)
         {
-            team.Players.Add(_soccerPlayerService.Create(team.Id, SoccerPlayerPosition.Midfielder));
+            team.Players.Add(_soccerPlayerService.Generate(team.Id, SoccerPlayerPosition.Midfielder));
         }
 
         await _applicationDbContext.SoccerTeams.AddAsync(team);
