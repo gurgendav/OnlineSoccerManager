@@ -1,5 +1,13 @@
 namespace SoccerManager.Application.Entities;
 
+public static class SoccerPlayerPosition
+{
+    public const string Goalkeeper = "Goalkeeper";
+    public const string Defender = "Defender";
+    public const string Midfielder = "Midfielder";
+    public const string Attackers = "Attackers";
+}
+
 public class SoccerPlayer
 {
     public int Id { get; set; }
