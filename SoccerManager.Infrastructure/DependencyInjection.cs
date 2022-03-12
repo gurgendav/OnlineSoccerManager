@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SoccerManager.Application.Entities;
 using SoccerManager.Application.Interfaces;
+using SoccerManager.Infrastructure.Generators;
 using SoccerManager.Infrastructure.Identity;
 using SoccerManager.Infrastructure.Identity.Options;
 using SoccerManager.Infrastructure.Persistence;
@@ -47,7 +48,10 @@ public static class DependencyInjection
             });
 
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserIdAccessor, UserIdAccessor>();
         services.AddHttpContextAccessor();
+        
+        services.AddTransient<INameGenerator, NameGenerator>();
 
         return services;
     }

@@ -1,8 +1,8 @@
 using FluentAssertions;
-using SoccerManager.Application.Utils;
+using SoccerManager.Infrastructure.Generators;
 using Xunit;
 
-namespace SoccerManager.Application.Tests.Utils;
+namespace SoccerManager.Infrastructure.Tests.Generators;
 
 public class NameGeneratorTests
 {

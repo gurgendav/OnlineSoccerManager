@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace SoccerManager.Infrastructure.Persistence.Migrations
+namespace SoccerManager.Infrastructure.Persistence.Configurations.Migrations
 {
     public partial class Initial : Migration
     {
@@ -155,6 +155,53 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SoccerTeams",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Country = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Budget = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SoccerTeams", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SoccerTeams_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SoccerPlayers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Country = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Age = table.Column<int>(type: "integer", nullable: false),
+                    Position = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    MarketValue = table.Column<int>(type: "integer", nullable: false),
+                    SoccerTeamId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SoccerPlayers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SoccerPlayers_SoccerTeams_SoccerTeamId",
+                        column: x => x.SoccerTeamId,
+                        principalTable: "SoccerTeams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +238,17 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoccerPlayers_SoccerTeamId",
+                table: "SoccerPlayers",
+                column: "SoccerTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoccerTeams_UserId",
+                table: "SoccerTeams",
+                column: "UserId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,7 +269,13 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "SoccerPlayers");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "SoccerTeams");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

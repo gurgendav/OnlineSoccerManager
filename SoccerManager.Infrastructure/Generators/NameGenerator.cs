@@ -1,7 +1,7 @@
 using System.Text;
 using SoccerManager.Application.Interfaces;
 
-namespace SoccerManager.Application.Utils;
+namespace SoccerManager.Infrastructure.Generators;
 
 public class NameGenerator : INameGenerator
 {

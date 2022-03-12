@@ -9,10 +9,10 @@ using SoccerManager.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace SoccerManager.Infrastructure.Persistence.Migrations
+namespace SoccerManager.Infrastructure.Persistence.Configurations.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220312003526_Initial")]
+    [Migration("20220312132854_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -220,6 +220,83 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("SoccerManager.Application.Entities.SoccerPlayer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("MarketValue")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("SoccerTeamId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SoccerTeamId");
+
+                    b.ToTable("SoccerPlayers");
+                });
+
+            modelBuilder.Entity("SoccerManager.Application.Entities.SoccerTeam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Budget")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("SoccerTeams");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -269,6 +346,38 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SoccerManager.Application.Entities.SoccerPlayer", b =>
+                {
+                    b.HasOne("SoccerManager.Application.Entities.SoccerTeam", "SoccerTeam")
+                        .WithMany("Players")
+                        .HasForeignKey("SoccerTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SoccerTeam");
+                });
+
+            modelBuilder.Entity("SoccerManager.Application.Entities.SoccerTeam", b =>
+                {
+                    b.HasOne("SoccerManager.Application.Entities.ApplicationUser", "User")
+                        .WithOne("SoccerTeam")
+                        .HasForeignKey("SoccerManager.Application.Entities.SoccerTeam", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SoccerManager.Application.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("SoccerTeam");
+                });
+
+            modelBuilder.Entity("SoccerManager.Application.Entities.SoccerTeam", b =>
+                {
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

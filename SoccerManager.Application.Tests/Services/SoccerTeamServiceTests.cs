@@ -15,7 +15,7 @@ public class SoccerTeamServiceTests
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly ISoccerPlayerService _soccerPlayerService;
     private readonly INameGenerator _nameGenerator;
-    
+
     private readonly SoccerTeamService _sut;
     
     public SoccerTeamServiceTests()
@@ -23,14 +23,17 @@ public class SoccerTeamServiceTests
         _applicationDbContext = Substitute.For<IApplicationDbContext>();
         _nameGenerator = Substitute.For<INameGenerator>();
         _soccerPlayerService = Substitute.For<ISoccerPlayerService>();
+        var userIdAccessor = Substitute.For<IUserIdAccessor>();
 
-        _sut = new SoccerTeamService(_applicationDbContext, _soccerPlayerService, _nameGenerator);
+        _sut = new SoccerTeamService(_applicationDbContext, userIdAccessor, _soccerPlayerService, _nameGenerator);
     }
     
     [Fact]
     public async Task Create_Returns_ValidTeamWith20Players()
     {
         // Arrange
+        const string userId = "aaaaa";
+        
         _nameGenerator.GenerateCountryName().Returns(new Fixture().Create<string>());
         _soccerPlayerService.Create(Arg.Any<int>(), Arg.Any<string>())
             .Returns(callInfo => new Fixture()
@@ -41,10 +44,11 @@ public class SoccerTeamServiceTests
                 .Create());
         
         // Act
-        var result = await _sut.Create();
+        var result = await _sut.Create(userId);
 
         // Assert
         result.Should().NotBeNull();
+        result.UserId.Should().Be(userId);
         result.Players.Should().HaveCount(20);
         result.Players.Where(p => p.Position == SoccerPlayerPosition.Attacker).Should().HaveCount(5);
         result.Players.Where(p => p.Position == SoccerPlayerPosition.Midfielder).Should().HaveCount(6);

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SoccerManager.WebAPI.Models;
 
-public class UserLoginModel
+public class UserLoginRequest
 {
     [Required]
     public string Email { get; set; }

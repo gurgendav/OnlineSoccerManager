@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.OpenApi.Models;
 using SoccerManager.Application;
 using SoccerManager.Infrastructure;
@@ -8,6 +9,7 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

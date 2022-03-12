@@ -8,7 +8,7 @@ using SoccerManager.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace SoccerManager.Infrastructure.Persistence.Migrations
+namespace SoccerManager.Infrastructure.Persistence.Configurations.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -199,9 +199,6 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
-                    b.Property<int>("SoccerTeamId")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -217,8 +214,6 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex("SoccerTeamId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -288,7 +283,14 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("SoccerTeams");
                 });
@@ -344,17 +346,6 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SoccerManager.Application.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("SoccerManager.Application.Entities.SoccerTeam", "SoccerTeam")
-                        .WithMany()
-                        .HasForeignKey("SoccerTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SoccerTeam");
-                });
-
             modelBuilder.Entity("SoccerManager.Application.Entities.SoccerPlayer", b =>
                 {
                     b.HasOne("SoccerManager.Application.Entities.SoccerTeam", "SoccerTeam")
@@ -363,6 +354,22 @@ namespace SoccerManager.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("SoccerTeam");
+                });
+
+            modelBuilder.Entity("SoccerManager.Application.Entities.SoccerTeam", b =>
+                {
+                    b.HasOne("SoccerManager.Application.Entities.ApplicationUser", "User")
+                        .WithOne("SoccerTeam")
+                        .HasForeignKey("SoccerManager.Application.Entities.SoccerTeam", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SoccerManager.Application.Entities.ApplicationUser", b =>
+                {
                     b.Navigation("SoccerTeam");
                 });
 

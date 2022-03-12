@@ -25,5 +25,10 @@ public class SoccerTeamConfiguration : IEntityTypeConfiguration<SoccerTeam>
             .WithOne(p => p.SoccerTeam)
             .HasForeignKey(p => p.SoccerTeamId)
             .IsRequired();
+
+        builder.HasOne(t => t.User)
+            .WithOne(u => u.SoccerTeam)
+            .HasForeignKey<SoccerTeam>(t => t.UserId)
+            .IsRequired();
     }
 }

@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using SoccerManager.Application.Interfaces;
 using SoccerManager.Application.Services;
-using SoccerManager.Application.Utils;
 
 namespace SoccerManager.Application;
 
@@ -11,7 +10,6 @@ public static class DependencyInjection
     {
         services.AddTransient<ISoccerTeamService, SoccerTeamService>();
         services.AddTransient<ISoccerPlayerService, SoccerPlayerService>();
-        services.AddTransient<INameGenerator, NameGenerator>();
 
         return services;
     }

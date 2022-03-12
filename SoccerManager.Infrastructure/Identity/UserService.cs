@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -16,17 +15,14 @@ public class UserService : IUserService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ISoccerTeamService _soccerTeamService;
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly JwtSettings _jwtSettings;
 
     public UserService(UserManager<ApplicationUser> userManager,
         ISoccerTeamService soccerTeamService,
-        IHttpContextAccessor httpContextAccessor,
         IOptions<JwtSettings> jwtSettings)
     {
         _userManager = userManager;
         _soccerTeamService = soccerTeamService;
-        _httpContextAccessor = httpContextAccessor;
         _jwtSettings = jwtSettings.Value;
     }
 
@@ -41,14 +37,15 @@ public class UserService : IUserService
         var user = new ApplicationUser
         {
             Email = email,
-            UserName = email,
-            SoccerTeam = await _soccerTeamService.Create()
+            UserName = email
         };
         var result = await _userManager.CreateAsync(user, password);
         if (!result.Succeeded)
         {
             return new UserRegisterResult(result.Errors.Select(e => e.Description));
         }
+        
+        await _soccerTeamService.Create(user.Id);
 
         return new UserRegisterResult(user.Id);
     }
@@ -83,10 +80,5 @@ public class UserService : IUserService
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
         return new UserLoginResult(user.Id, tokenString, token.ValidTo);
-    }
-
-    public string GetCurrentUserId()
-    {
-        return _httpContextAccessor.HttpContext?.User.Identity?.Name;
     }
 }
