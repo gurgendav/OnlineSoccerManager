@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoccerManager.WebAPI", "SoccerManager.WebAPI\SoccerManager.WebAPI.csproj", "{C64D0972-F800-42B8-B20A-E61C0F53BB49}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B71F6B0A-CBA4-4074-8CFC-49733BB6CB41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0A43DB85-26BB-4AF8-83CC-982B36B9A737}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoccerManager.Application", "SoccerManager.Application\SoccerManager.Application.csproj", "{D9E86736-795F-438F-818A-AF3E83770A9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoccerManager.Infrastructure", "SoccerManager.Infrastructure\SoccerManager.Infrastructure.csproj", "{F9363B7D-DCE8-432F-99C1-6AF479BCE00B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C64D0972-F800-42B8-B20A-E61C0F53BB49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C64D0972-F800-42B8-B20A-E61C0F53BB49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C64D0972-F800-42B8-B20A-E61C0F53BB49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C64D0972-F800-42B8-B20A-E61C0F53BB49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9E86736-795F-438F-818A-AF3E83770A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9E86736-795F-438F-818A-AF3E83770A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9E86736-795F-438F-818A-AF3E83770A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9E86736-795F-438F-818A-AF3E83770A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9363B7D-DCE8-432F-99C1-6AF479BCE00B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9363B7D-DCE8-432F-99C1-6AF479BCE00B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9363B7D-DCE8-432F-99C1-6AF479BCE00B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9363B7D-DCE8-432F-99C1-6AF479BCE00B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C64D0972-F800-42B8-B20A-E61C0F53BB49} = {B71F6B0A-CBA4-4074-8CFC-49733BB6CB41}
+		{D9E86736-795F-438F-818A-AF3E83770A9A} = {B71F6B0A-CBA4-4074-8CFC-49733BB6CB41}
+		{F9363B7D-DCE8-432F-99C1-6AF479BCE00B} = {B71F6B0A-CBA4-4074-8CFC-49733BB6CB41}
+	EndGlobalSection
+EndGlobal
