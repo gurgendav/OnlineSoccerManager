@@ -5,7 +5,7 @@ public static class SoccerPlayerPosition
     public const string Goalkeeper = "Goalkeeper";
     public const string Defender = "Defender";
     public const string Midfielder = "Midfielder";
-    public const string Attackers = "Attackers";
+    public const string Attacker = "Attacker";
 }
 
 public class SoccerPlayer
