@@ -32,7 +32,7 @@ public class AuthenticationController : ControllerBase
             return Ok(result);
         }
         
-        return BadRequest(result.Errors);
+        return BadRequest(new ErrorResponse(result.Errors));
     }
 
     [HttpPost]
@@ -51,7 +51,6 @@ public class AuthenticationController : ControllerBase
             return Ok(result);
         }
 
-        // TODO consistent error response models
-        return Unauthorized(result);
+        return Unauthorized(new ErrorResponse(new List<string> { result.Error }));
     }
 }

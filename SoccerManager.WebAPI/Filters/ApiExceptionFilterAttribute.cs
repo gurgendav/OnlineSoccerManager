@@ -65,10 +65,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     
     private void HandleAlreadyInTransferException(ExceptionContext context)
     {
-        var result = new ErrorResponse
-        {
-            Errors = new List<string> { context.Exception.Message }
-        };
+        var result = new ErrorResponse(new List<string> { context.Exception.Message });
 
         context.Result = new ObjectResult(result)
         {
@@ -80,10 +77,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     
     private void HandleNotEnoughBudgetException(ExceptionContext context)
     {
-        var result = new ErrorResponse
-        {
-            Errors = new List<string> { context.Exception.Message }
-        };
+        var result = new ErrorResponse(new List<string> { context.Exception.Message });
 
         context.Result = new ObjectResult(result)
         {
