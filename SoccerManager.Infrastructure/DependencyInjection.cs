@@ -52,6 +52,7 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         
         services.AddTransient<INameGenerator, NameGenerator>();
+        services.AddTransient<INumberGenerator, NumberGenerator>();
 
         return services;
     }

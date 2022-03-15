@@ -13,14 +13,17 @@ public class SoccerPlayerService : ISoccerPlayerService
     private const int InitialPlayerMarketValue = 1_000_000;
 
     private readonly INameGenerator _nameGenerator;
+    private readonly INumberGenerator _numberGenerator;
     private readonly IUserIdAccessor _userIdAccessor;
     private readonly IApplicationDbContext _applicationDbContext;
 
     public SoccerPlayerService(INameGenerator nameGenerator, 
+        INumberGenerator numberGenerator,
         IUserIdAccessor userIdAccessor,
         IApplicationDbContext applicationDbContext)
     {
         _nameGenerator = nameGenerator;
+        _numberGenerator = numberGenerator;
         _userIdAccessor = userIdAccessor;
         _applicationDbContext = applicationDbContext;
     }
@@ -31,7 +34,7 @@ public class SoccerPlayerService : ISoccerPlayerService
         {
             Position = position,
             SoccerTeamId = soccerTeamId,
-            Age = Random.Shared.Next(MinPlayerAge, MaxPlayerAge + 1),
+            Age = _numberGenerator.GenerateInt(MinPlayerAge, MaxPlayerAge + 1),
             FirstName = _nameGenerator.GenerateFirstName(),
             LastName = _nameGenerator.GenerateLastName(),
             Country = _nameGenerator.GenerateCountryName(),

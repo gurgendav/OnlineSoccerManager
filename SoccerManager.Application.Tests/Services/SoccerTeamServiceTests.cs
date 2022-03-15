@@ -39,6 +39,7 @@ public class SoccerTeamServiceTests
             .Returns(callInfo => new Fixture()
                 .Build<SoccerPlayer>()
                 .With(p => p.SoccerTeam, (SoccerTeam)null)
+                .With(p => p.TransferItem, (TransferItem)null)
                 .With(p => p.SoccerTeamId, callInfo.Arg<int>())
                 .With(p => p.Position, callInfo.Arg<string>())
                 .Create());

@@ -7,12 +7,19 @@ namespace SoccerManager.Application.Services;
 
 public class TransfersService : ITransfersService
 {
+    private const int MinPlayerMarketValueIncreasePercent = 10;
+    private const int MaxPlayerMarketValueIncreasePercent = 100;
+
     private readonly IApplicationDbContext _applicationDbContext;
+    private readonly INumberGenerator _numberGenerator;
     private readonly IUserIdAccessor _userIdAccessor;
 
-    public TransfersService(IApplicationDbContext applicationDbContext, IUserIdAccessor userIdAccessor)
+    public TransfersService(IApplicationDbContext applicationDbContext,
+        INumberGenerator numberGenerator,
+        IUserIdAccessor userIdAccessor)
     {
         _applicationDbContext = applicationDbContext;
+        _numberGenerator = numberGenerator;
         _userIdAccessor = userIdAccessor;
     }
 
@@ -37,7 +44,7 @@ public class TransfersService : ITransfersService
         {
             throw new UnauthorizedException("You are not allowed to transfer this player");
         }
-        
+
         if (player.TransferItemId != null)
         {
             throw new AlreadyInTransferException("This player is already in transfers list");
@@ -87,7 +94,7 @@ public class TransfersService : ITransfersService
         var team = await _applicationDbContext.SoccerTeams.FirstAsync(t => t.UserId == userId);
 
         var soccerPlayer = transferItem.SoccerPlayer;
-        
+
         if (team.Budget < transferItem.Price)
         {
             throw new NotEnoughBudgetException("You don't have enough budget to execute this transfer");
@@ -97,8 +104,9 @@ public class TransfersService : ITransfersService
         team.Budget -= transferItem.Price;
         soccerPlayer.SoccerTeam = team;
 
-        // Todo random factor for transfer
-        soccerPlayer.MarketValue = (int)(transferItem.Price * 1.1);
+        var increasePercent =
+            _numberGenerator.GenerateInt(MinPlayerMarketValueIncreasePercent, MaxPlayerMarketValueIncreasePercent);
+        soccerPlayer.MarketValue = transferItem.Price + transferItem.Price * increasePercent / 100;
 
         _applicationDbContext.Transfers.Remove(transferItem);
         await _applicationDbContext.SaveChangesAsync();
